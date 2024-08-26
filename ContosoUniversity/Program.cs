@@ -1,10 +1,21 @@
+using ContosoUniversity.Data;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
 var app = builder.Build();
+public void ConfigureServices(IServiceCollection services) { }
+{
+    builder.Services.AddDbContext<SchoolContext>(Options => Options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+    
+    builder.Services.AddControllersWithViews();
+    builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
+}
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
 {
