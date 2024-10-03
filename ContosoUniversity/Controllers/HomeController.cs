@@ -1,8 +1,9 @@
 using ContosoUniversity.Models;
+using ContosoUniverstity.Mvc;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 
-namespace ContosoUniversity.Controllers
+namespace ContosoUniverstity.Controllers
 {
     public class HomeController : Controller
     {
@@ -29,4 +30,3 @@ namespace ContosoUniversity.Controllers
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
     }
-}
