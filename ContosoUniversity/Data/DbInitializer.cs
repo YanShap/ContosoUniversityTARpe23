@@ -1,22 +1,19 @@
 ﻿using ContosoUniversity.Data;
 using ContosoUniversity.Models;
-using ContosoUniverstity.Models;
+using ContosoUniversity.Models;
 
-namespace ContosoUniverstity.Data
+namespace ContosoUniversity.Data
 {
-    public class DbInitialize
+    public class DbInitializer
     {
         public static void Initialize(SchoolContext context)
         {
-            //teeb kindlaks et andmebaas tehakse, või oleks olemas
             context.Database.EnsureCreated();
 
-            //kui õpilaste tabelis juba on õpilasi, väljub funktsioonist
-            if (context.Instructors.Any())
+            if (context.Students.Any())
             {
                 return;
             }
-            //objekt õpilastega, mis lisatakse siis, kui õpilasi sisestatud ei ole
 
             var students = new Student[]
            {
@@ -81,9 +78,9 @@ namespace ContosoUniverstity.Data
             context.SaveChanges();
 
             if (context.Instructors.Any()) { return; }
-            var instructors = new InstructorExists[]
+            var instructors = new Instructor[]
             {
-                new InstructorExists
+                new Instructor
                 {
                     LastName = "Smith",
                     FirstMidName = "John",

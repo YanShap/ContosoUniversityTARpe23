@@ -1,14 +1,11 @@
 ﻿using ContosoUniversity.Data;
 using ContosoUniversity.Models;
-using ContosoUniverstity.Data;
-using ContosoUniverstity.Models;
-using Microsoft.AspNetCore.Components.Forms;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
-using System.Net.Sockets;
 
-namespace ContosoUniverstity.Controllers
+namespace ContosoUniversity.Controllers
 {
     public class StudentsController : Controller
     {
@@ -84,7 +81,7 @@ namespace ContosoUniverstity.Controllers
             return View();
         }
 
-        //create meetod, sisestab andmebaasi uue õpilase. insert new student into database
+        //create meetod, sisestab andmebaasi uue õpilase.
 
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -195,6 +192,7 @@ namespace ContosoUniverstity.Controllers
             return View(student);
         }
 
+
         private bool StudentExists(int id)
         {
             throw new NotImplementedException();
@@ -257,7 +255,5 @@ namespace ContosoUniverstity.Controllers
          kontrollerisse selle vaate GET meetod, ning post meetod.
         post meetod sisestab olemasoleva õpilase tabelisse hinde
         kuvatakse aga õpilase ees ja perekonnanimi näiteks ka ning vajadusel eelnevalt olemasolev hinne*/
-
-
     }
 }

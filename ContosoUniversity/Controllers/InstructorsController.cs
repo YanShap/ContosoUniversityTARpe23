@@ -1,12 +1,9 @@
 ﻿using ContosoUniversity.Data;
 using ContosoUniversity.Models;
-using ContosoUniverstity.Data;
-using ContosoUniverstity.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using System.Reflection;
 
-namespace ContosoUniverstity.Controllers
+namespace ContosoUniversity.Controllers
 {
     public class InstructorsController : Controller
     {
@@ -35,8 +32,8 @@ namespace ContosoUniverstity.Controllers
             if (id != null)
             {
                 ViewData["InstructorId"] = id.Value;
-                InstructorExists instructor = vm.Instructors
-                    .Where(i => i.Id == id.Value).Single();
+                Instructor instructor = vm.Instructors
+                    .Where(i => i.ID == id.Value).Single();
                 vm.Courses = instructor.CourseAssignments
                     .Select(i => i.Course);
             }
@@ -56,14 +53,14 @@ namespace ContosoUniverstity.Controllers
         [HttpGet]
         public IActionResult Create()
         {
-            var instructor = new InstructorExists();
+            var instructor = new Instructor();
             instructor.CourseAssignments = new List<CourseAssignment>();
             return View();
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(InstructorExists instructor)
+        public async Task<IActionResult> Create(Instructor instructor)
         {
             /*if (selectedCourse == null)
             {
@@ -72,8 +69,8 @@ namespace ContosoUniverstity.Controllers
                 {
                     var courseToAdd = new CourseAssignment
                     {
-                        InstructorId = instructor.Id,
-                        CourseId = course
+                        Instructor = instructor,
+                        Course = course
                     };
                     instructor.CourseAssignments.Add(courseToAdd);
                 }
@@ -89,10 +86,10 @@ namespace ContosoUniverstity.Controllers
             return View(instructor);
         }
 
-        private void PopulateAssignedCourseData(InstructorExists instructor)
+        private void PopulateAssignedCourseData(Instructor instructor)
         {
             var allCourses = _context.Courses;
-            var instructorCourses = new HashSet<int>(instructor.CourseAssignments.Select(c => c.CourseId));
+            var instructorCourses = new HashSet<int>(instructor.CourseAssignments.Select(c => c.CourseID));
             var vm = new List<AssignedCourseData>();
             foreach (var course in allCourses)
             {
@@ -105,7 +102,6 @@ namespace ContosoUniverstity.Controllers
             }
             ViewData["Courses"] = vm;
         }
-
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -114,7 +110,7 @@ namespace ContosoUniverstity.Controllers
             }
 
             var instructor = await _context.Instructors
-                .FirstOrDefaultAsync(m => m.Id == id);
+                .FirstOrDefaultAsync(m => m.ID == id);
 
             if (instructor == null)
             {
@@ -135,7 +131,6 @@ namespace ContosoUniverstity.Controllers
 
             return RedirectToAction(nameof(Index));
         }
-
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -153,9 +148,9 @@ namespace ContosoUniverstity.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, InstructorExists instructor)
+        public async Task<IActionResult> Edit(int id, Instructor instructor)
         {
-            if (id != instructor.Id)
+            if (id != instructor.ID)
             {
                 return NotFound();
             }
@@ -169,7 +164,7 @@ namespace ContosoUniverstity.Controllers
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!InstructorExists(instructor.Id))
+                    if (!Instructor(instructor.ID))
                     {
                         return NotFound();
                     }
@@ -183,7 +178,7 @@ namespace ContosoUniverstity.Controllers
             return View(instructor);
         }
 
-        private bool InstructorExists(int id)
+        private bool Instructor(int id)
         {
             throw new NotImplementedException();
         }
@@ -197,17 +192,19 @@ namespace ContosoUniverstity.Controllers
                 return NotFound();
             }
 
-            var ClonedInstructor = new InstructorExists
+            var ClonedInstructor = new Instructor
             {
                 LastName = instructor.LastName,
                 FirstMidName = instructor.FirstMidName,
                 HireDate = instructor.HireDate,
+                OfficeAssignment = instructor.OfficeAssignment,
             };
 
             _context.Instructors.Add(ClonedInstructor);
             await _context.SaveChangesAsync();
 
             return RedirectToAction(nameof(Index));
+
         }
     }
 }

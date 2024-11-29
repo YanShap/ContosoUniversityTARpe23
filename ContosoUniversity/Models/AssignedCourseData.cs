@@ -1,12 +1,9 @@
-﻿using Microsoft.AspNetCore.Mvc;
-
-namespace ContosoUniversity.Models
+﻿namespace ContosoUniversity.Models
 {
-    public class AssignedCourseData : Controller
+    internal class AssignedCourseData
     {
-        public IActionResult Index()
-        {
-            return View();
-        }
+        public int CourseId { get; set; }
+        public string Title { get; set; }
+        public bool Assigned { get; set; }
     }
 }
